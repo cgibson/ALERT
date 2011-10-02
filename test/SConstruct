@@ -1,0 +1,15 @@
+import platform
+
+env = Environment(CC = 'g++')
+env.Append(CPPPATH=[])
+conf = Configure(env)
+
+env.Append(CCFLAGS=['-g'])
+
+Export('env')
+
+objects = []
+
+objects = objects + SConscript('src/SConscript')
+
+env.Program('glmTest', objects, LIBS=[])
