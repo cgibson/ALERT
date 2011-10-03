@@ -8,15 +8,18 @@
 #ifndef SPHERE_HPP_
 #define SPHERE_HPP_
 
-#include "sanitize_glm.hpp"
+#include "types.hpp"
 
-class Sphere {
+#include "geom/geometry.hpp"
+
+class Sphere : public GeometryNode{
 
 public:
-	Sphere(double radius, vec3 const & center);
+	Sphere(float radius, glm::vec3 const & center);
 
-	double radius;
-	vec3 center;
+	float intersect(Ray const & ray){ return -1; };
+
+	float radius;
 
 };
 

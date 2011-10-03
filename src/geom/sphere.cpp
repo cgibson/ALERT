@@ -9,10 +9,13 @@
 
 #include "geom/sphere.hpp"
 
-#include "sanitize_glm.hpp"
+#define GLM_FORCE_INLINE
+#include <glm/glm.hpp>
 
-Sphere::Sphere(double radius, vec3 const & center)
+
+Sphere::Sphere(float radius, vec3 const & center):
+	radius(radius),
+	GeometryNode(center)
 {
-	this->radius = radius;
-	this->center = center;
+
 }

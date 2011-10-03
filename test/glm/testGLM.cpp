@@ -7,12 +7,7 @@
 
 #include <stdio.h>
 
-#define GLM_FORCE_INLINE
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-using glm::vec3;
-using glm::mat4;
+#include "types.hpp"
 
 int main()
 {

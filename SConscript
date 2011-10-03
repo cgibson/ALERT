@@ -7,20 +7,22 @@ srcEnv = env.Clone()
 
 setupEnv(srcEnv)
 
-builtLibs = []
+objects = []
 
 # Build all modules within the source directory
 for dir in srcModules:
-	sources = Glob(join(srcDir, dir, '*.cpp'))
-	objects = []
 
-	libPath = join(buildPath, dir)
+	for file in Glob(join(srcDir, dir, '*.cpp')):
+		fileName = os.path.basename(str(file))
+		
+		fileName = fileName.split(".")[0]
+		print fileName
 
-	lib = srcEnv.SharedLibrary(libPath, sources)
+		outDir = join(buildPath, dir, fileName)
+		objects = objects + srcEnv.Object(source=file, target=outDir)
 	
-	builtLibs.append(lib)
 	
 # Compile the remaining source files and create a program using the above libs
-sources = Glob(join(srcDir, '*.cpp'))
+objects = objects + srcEnv.Object(Glob(join(srcDir, '*.cpp')))
 
-srcEnv.Program(join(buildPath, programName), sources, LIBS=builtLibs)
+srcEnv.Program(join(programPath, programName), objects, LIBS=[])

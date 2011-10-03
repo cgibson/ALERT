@@ -9,14 +9,13 @@
 
 #include "geom/sphere.hpp"
 
-#include "sanitize_glm.hpp"
+#include "types.hpp"
 
 int main()
 {
+    Sphere s(0.5, glm::vec3(0));
 
-	Sphere s(0.5, vec3(0));
-
-	printf("Hello, sphere.\n");
+	printf("Hello, node.\n");
 
 	return 0;
 }

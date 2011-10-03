@@ -3,10 +3,13 @@ import sys
 
 from SCons.Script import *
 from os.path import join
+from os import path
 
 #------------------------------------------------------------------------------#
 
 programName = 'AleRT'
+
+programPath = '.'
 
 compilerType = 'g++'
 
@@ -20,7 +23,8 @@ testDir = "test"
 
 # These lie under the source directory
 srcModules = [
-              "geom"
+              "geom",
+              "util"
              ]
 
 testModules = [
@@ -29,7 +33,8 @@ testModules = [
 
 # Paths to include from
 sysIncludePaths = [
-                   'include'
+                   'include',
+                   'glm'
                   ]
 
 # Paths containing libraries
