@@ -3,6 +3,7 @@
 *.pyc
 *.dblite
 
+docs
 build
 Debug
 AleRT
