@@ -51,6 +51,17 @@ sysLibs = [
 def isDebugBuild():
     return ARGUMENTS.get('debug', 0)
 
+def isTestBuild():
+    return ARGUMENTS.get('test', 0)
+    
+    
+def getBuildPath(pathToRoot = "."):
+    return join(pathToRoot, buildPath)
+    
+def buildPaths(paths, pathToRoot):
+    mapPath = lambda x:  x if path.isabs(x) else join(pathToRoot, x); 
+    return map(mapPath, paths)
+
 
 #------------------------------------------------------------------------------#
 def setupEnv(env, pathToRoot = "."):
@@ -58,10 +69,10 @@ def setupEnv(env, pathToRoot = "."):
     applyDir = lambda x, y: "%s/%s" % (x, y);
     
     # Include paths
-    env.Append(CPPPATH = sysIncludePaths)
+    env.Append(CPPPATH = buildPaths(sysIncludePaths, pathToRoot))
     
     # Library paths
-    env.Append(LIBPATH = sysLibPaths)
+    env.Append(LIBPATH = buildPaths(sysLibPaths, pathToRoot))
     
     # Libraries
     env.Append(LIBS = sysLibs)

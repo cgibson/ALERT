@@ -1,0 +1,8 @@
+*.o
+*.so
+*.pyc
+*.dblite
+
+build
+Debug
+AleRT
