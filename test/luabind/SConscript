@@ -13,7 +13,10 @@ objects = []
 
 # Build library
 libFiles = ['luabindTest.cpp']
-outDir = join(getBuildPath(pathToRoot), testDir, "luabind", "luaBindLib")
+outDir = join(getBuildPath(pathToRoot), testDir, "luabind")
 libObjects = []
 libObjects = libObjects + testEnv.SharedObject(outDir, libFiles)
-testEnv.SharedLibrary(outDir, libObjects)
+testEnv.SharedLibrary(join(outDir,"luaBindLib"), libObjects)
+
+testEnv.Program(join(outDir,"cppfunc"), "cppfunc.cpp")
+testEnv.Program(join(outDir,"cppclass"), "cppclass.cpp")
