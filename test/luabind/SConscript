@@ -1,0 +1,19 @@
+from BuildConfig import *
+
+
+Import('env')
+
+testEnv = env.Clone()
+
+pathToRoot = "../.."
+
+setupEnv(testEnv, pathToRoot)
+
+objects = []
+
+# Build library
+libFiles = ['luabindTest.cpp']
+outDir = join(getBuildPath(pathToRoot), testDir, "luabind", "luaBindLib")
+libObjects = []
+libObjects = libObjects + testEnv.SharedObject(outDir, libFiles)
+testEnv.SharedLibrary(outDir, libObjects)

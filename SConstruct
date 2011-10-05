@@ -6,7 +6,7 @@ env = Environment(CC = compilerType)
 
 Export("env")
 
-if isTestBuild():
+if not isTestBuild():
     SConscript('SConscript')
 else:
     SConscript(join(testDir, 'SConscript'))

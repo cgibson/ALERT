@@ -23,18 +23,20 @@ testDir = "test"
 
 # These lie under the source directory
 srcModules = [
-              "geom",
-              "util"
+              'geom',
+              'util'
              ]
 
 testModules = [
-               "glm"
+               'glm',
+               'luabind'
               ]
 
 # Paths to include from
 sysIncludePaths = [
                    'include',
-                   'glm'
+                   'glm',
+                   '/usr/include/lua5.1'
                   ]
 
 # Paths containing libraries
@@ -44,7 +46,8 @@ sysLibPaths = [
 
 # Libraries to reference
 sysLibs = [
-           'boost_thread-mt'
+           'boost_thread-mt',
+           'luabindd'
           ]
 
 #------------------------------------------------------------------------------#
