@@ -9,11 +9,13 @@ pathToRoot = ".."
 
 setupEnv(testEnv, pathToRoot)
 
+Export('testEnv')
+
 # Build all modules within the source directory
 for dir in testModules:
 
     objects = []
-
+    
     # Custom SConscript
     if os.path.exists(join(dir, "SConscript")):
         SConscript(join(dir, "SConscript"))
@@ -22,7 +24,6 @@ for dir in testModules:
     		fileName = os.path.basename(str(file))
     		
     		fileName = fileName.split(".")[0]
-    		print fileName
     
     		outDir = join(getBuildPath(pathToRoot), testDir, dir, fileName)
     		objects = objects + testEnv.Object(source=file, target=outDir)

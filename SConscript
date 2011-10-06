@@ -16,7 +16,6 @@ for dir in srcModules:
 		fileName = os.path.basename(str(file))
 		
 		fileName = fileName.split(".")[0]
-		print fileName
 
 		outDir = join(buildPath, dir, fileName)
 		objects = objects + srcEnv.Object(source=file, target=outDir)

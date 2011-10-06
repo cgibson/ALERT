@@ -49,6 +49,11 @@ sysLibs = [
            'boost_thread-mt',
            'luabindd'
           ]
+          
+testLibs = [
+            'boost_unit_test_framework'
+           ]
+
 
 #------------------------------------------------------------------------------#
 def isDebugBuild():
@@ -79,6 +84,10 @@ def setupEnv(env, pathToRoot = "."):
     
     # Libraries
     env.Append(LIBS = sysLibs)
+    
+    # Test libraries
+    if(isTestBuild()):
+        env.Append(LIBS = testLibs)
     
     if isDebugBuild():
         env.Append(CCFLAGS = ["-g"])

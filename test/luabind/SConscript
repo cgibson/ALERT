@@ -1,22 +1,19 @@
 from BuildConfig import *
 
 
-Import('env')
-
-testEnv = env.Clone()
+Import('testEnv')
 
 pathToRoot = "../.."
 
-setupEnv(testEnv, pathToRoot)
+outDir = join(getBuildPath(pathToRoot), testDir, "luabind")
 
-objects = []
+#objects = []
 
 # Build library
-libFiles = ['luabindTest.cpp']
-outDir = join(getBuildPath(pathToRoot), testDir, "luabind")
-libObjects = []
-libObjects = libObjects + testEnv.SharedObject(outDir, libFiles)
-testEnv.SharedLibrary(join(outDir,"luaBindLib"), libObjects)
+#libFiles = ['luabindTest.cpp']
+#
+#libObjects = []
+#libObjects = libObjects + testEnv.SharedObject(outDir, libFiles)
+#testEnv.SharedLibrary(join(outDir,"luaBindLib"), libObjects)
 
-testEnv.Program(join(outDir,"cppfunc"), "cppfunc.cpp")
-testEnv.Program(join(outDir,"cppclass"), "cppclass.cpp")
+testEnv.Program(join(outDir,"suites"), ["unittests.cpp"])
