@@ -15,3 +15,4 @@ extern "C"
 // TESTS
 #include "luaFuncTests.hpp"
 #include "luaClassTests.hpp"
+#include "luaSceneClassTests.hpp"

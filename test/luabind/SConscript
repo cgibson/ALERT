@@ -3,17 +3,21 @@ from BuildConfig import *
 
 Import('testEnv')
 
+luaTestEnv = testEnv.Clone()
+
 pathToRoot = "../.."
+
+setupEnv(luaTestEnv, pathToRoot)
 
 outDir = join(getBuildPath(pathToRoot), testDir, "luabind")
 
-#objects = []
+sources = ["unittests.cpp"] + getSource("geom", pathToRoot)
 
-# Build library
-#libFiles = ['luabindTest.cpp']
-#
-#libObjects = []
-#libObjects = libObjects + testEnv.SharedObject(outDir, libFiles)
-#testEnv.SharedLibrary(join(outDir,"luaBindLib"), libObjects)
+objects = []
 
-testEnv.Program(join(outDir,"suites"), ["unittests.cpp"])
+for source in sources:
+    source = str(source)
+    name = (source.split("/")[-1]).split(".")[0]
+    objects.append(luaTestEnv.Object(join(outDir, name), source))
+
+luaTestEnv.Program(join(outDir,"suites"), objects)

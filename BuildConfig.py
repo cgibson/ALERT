@@ -69,6 +69,10 @@ def getBuildPath(pathToRoot = "."):
 def buildPaths(paths, pathToRoot):
     mapPath = lambda x:  x if path.isabs(x) else join(pathToRoot, x); 
     return map(mapPath, paths)
+    
+def getSource(module, pathToRoot = "."):
+    print join(pathToRoot, buildPath, module, "*.cpp")
+    return Glob(join(pathToRoot, srcDir, module, "*.cpp"))
 
 
 #------------------------------------------------------------------------------#
@@ -77,13 +81,13 @@ def setupEnv(env, pathToRoot = "."):
     applyDir = lambda x, y: "%s/%s" % (x, y);
     
     # Include paths
-    env.Append(CPPPATH = buildPaths(sysIncludePaths, pathToRoot))
+    env.Replace(CPPPATH = buildPaths(sysIncludePaths, pathToRoot))
     
     # Library paths
-    env.Append(LIBPATH = buildPaths(sysLibPaths, pathToRoot))
+    env.Replace(LIBPATH = buildPaths(sysLibPaths, pathToRoot))
     
     # Libraries
-    env.Append(LIBS = sysLibs)
+    env.Replace(LIBS = sysLibs)
     
     # Test libraries
     if(isTestBuild()):

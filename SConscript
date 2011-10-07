@@ -18,7 +18,7 @@ for dir in srcModules:
 		fileName = fileName.split(".")[0]
 
 		outDir = join(buildPath, dir, fileName)
-		objects = objects + srcEnv.Object(source=file, target=outDir)
+		objects = objects + srcEnv.Object(outDir, file)
 	
 	
 # Compile the remaining source files and create a program using the above libs
