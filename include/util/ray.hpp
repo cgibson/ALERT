@@ -15,6 +15,8 @@ public:
 	Ray(vec3 start, vec3 direction);
 	virtual ~Ray(){};
 
+	string str();
+
 	vec3 operator() (float t){ return p + (w * t); }
 
 	vec3 p;

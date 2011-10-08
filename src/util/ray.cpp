@@ -18,3 +18,15 @@ Ray::Ray(vec3 start, vec3 direction):
 {
 
 }
+
+string
+Ray::str()
+{
+	//printf("sphere: loc:<%.2f, %.2f, %.2f> rad:%.2f", loc.x, loc.y, loc.z, radius);
+	std::stringstream ss;
+	ss << "ray: p:<" << p.x << "," << p.y << "," << p.z << "> ";
+	ss << "w:<" << w.x << "," << w.y << "," << w.z << ">";
+	ss << std::endl;
+	printf("%s", ss.str().c_str());
+	return ss.str();
+}

@@ -11,7 +11,10 @@ setupEnv(luaTestEnv, pathToRoot)
 
 outDir = join(getBuildPath(pathToRoot), testDir, "luabind")
 
-sources = ["unittests.cpp"] + getSource("geom", pathToRoot)
+sources = ["unittests.cpp"]
+sources = sources + getSource("geom", pathToRoot)
+sources = sources + getSource("util", pathToRoot)
+sources = sources + getSource("lua", pathToRoot)
 
 objects = []
 

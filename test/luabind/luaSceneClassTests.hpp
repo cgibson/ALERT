@@ -1,15 +1,6 @@
 #include <boost/test/unit_test.hpp>
 
-extern "C"
-{
-    #include <lua.h>
-}
-
-#include <iostream>
-#include <stdio.h>
-#include <luabind/luabind.hpp>
-
-#include "geom/sphere.hpp"
+#include "lua/bindings.hpp"
 
 using namespace std;
 
@@ -27,17 +18,7 @@ BOOST_AUTO_TEST_CASE(luaTestSceneClass)
 	luabind::open(myLuaState);
 
 	// Export our class with LuaBind
-	luabind::module(myLuaState) [
-		luabind::class_<glm::vec3>("vec3")
-			.def(luabind::constructor<float, float, float>())
-			.def_readwrite("x", &glm::vec3::x)
-			.def_readwrite("y", &glm::vec3::y)
-			.def_readwrite("z", &glm::vec3::z),
-	   luabind::class_<Sphere>("sphere")
-			.def(luabind::constructor<glm::vec3, float>())
-			.def_readwrite("radius", &Sphere::radius)
-			.def("str", &Sphere::str)
-	];
+	lua::bindings::bindClasses(myLuaState);
 
 	// Now use this class in a lua script
 	luaL_dostring(
@@ -45,7 +26,10 @@ BOOST_AUTO_TEST_CASE(luaTestSceneClass)
 		"v = vec3(1.0, 2.0, 3.0)\n"
 		"s = sphere(v, 5.0)\n"
 		"s:str()\n"
-		"s:test()"
+		"p = vec3(0,0,0)\n"
+		"w = vec3(0,0,-1)\n"
+		"r = ray(p, w)\n"
+		"r:str()\n"
 	);
 
 	lua_close(myLuaState);

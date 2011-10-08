@@ -24,7 +24,8 @@ testDir = "test"
 # These lie under the source directory
 srcModules = [
               'geom',
-              'util'
+              'util',
+              'lua'
              ]
 
 testModules = [

@@ -11,6 +11,12 @@
 #define GLM_FORCE_INLINE
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <string>
+#include <sstream>
+#include <stdio.h>
+
+using std::string;
+using std::stringstream;
 
 using glm::vec3;
 using glm::vec4;
