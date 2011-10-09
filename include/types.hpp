@@ -15,6 +15,8 @@
 #include <sstream>
 #include <stdio.h>
 
+#include "texture/exrTexture.hpp"
+
 using std::string;
 using std::stringstream;
 
@@ -23,6 +25,8 @@ using glm::vec4;
 using glm::mat4;
 
 typedef glm::vec4 Spectrum;
+
+typedef texture::ExrTexture Texture;
 
 #define UNIMPLEMENTED_FUNC -1
 

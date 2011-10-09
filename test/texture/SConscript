@@ -1,0 +1,24 @@
+from BuildConfig import *
+
+
+Import('testEnv')
+
+texEnv = testEnv.Clone()
+
+pathToRoot = "../.."
+
+setupEnv(texEnv, pathToRoot)
+
+outDir = join(getBuildPath(pathToRoot), testDir, "texture")
+
+sources = Glob('*.cpp')
+sources = sources + getSource("texture", pathToRoot)
+
+objects = []
+
+for source in sources:
+    source = str(source)
+    name = (source.split("/")[-1]).split(".")[0]
+    objects.append(texEnv.Object(join(outDir, name), source))
+
+texEnv.Program(join(outDir,"texture"), objects)

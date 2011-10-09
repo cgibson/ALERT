@@ -27,13 +27,14 @@ srcModules = [
               'util',
               'lua',
               'light',
-              'core'
+              'core',
+              'texture'
              ]
 
 testModules = [
                'glm',
                'luabind',
-               'exr'
+               'texture'
               ]
 
 # Paths to include from
@@ -52,7 +53,7 @@ sysLibPaths = [
 # Libraries to reference
 sysLibs = [
            'boost_thread-mt',
-           'luabindd',
+           'luabind',
            'IlmImf'
           ]
           
