@@ -29,4 +29,4 @@ for dir in testModules:
     		objects = objects + testEnv.Object(source=file, target=outDir)
 	
     	# Example: ../build/test/glm/glm
-        testEnv.Program(join(getBuildPath(pathToRoot), testDir, dir, dir), objects, LIBS=[])
+        testEnv.Program(join(getBuildPath(pathToRoot), testDir, dir, dir), objects)

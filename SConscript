@@ -24,4 +24,4 @@ for dir in srcModules:
 # Compile the remaining source files and create a program using the above libs
 objects = objects + srcEnv.Object(Glob(join(srcDir, '*.cpp')))
 
-srcEnv.Program(join(programPath, programName), objects, LIBS=[])
+srcEnv.Program(join(programPath, programName), objects)

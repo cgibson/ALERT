@@ -14,6 +14,8 @@ outDir = join(getBuildPath(pathToRoot), testDir, "luabind")
 sources = ["unittests.cpp"]
 sources = sources + getSource("geom", pathToRoot)
 sources = sources + getSource("util", pathToRoot)
+sources = sources + getSource("core", pathToRoot)
+sources = sources + getSource("light", pathToRoot)
 sources = sources + getSource("lua", pathToRoot)
 
 objects = []

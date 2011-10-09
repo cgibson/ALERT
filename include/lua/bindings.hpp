@@ -14,8 +14,6 @@ extern "C"
 }
 #include <luabind/luabind.hpp>
 
-#include "geom/sphere.hpp"
-
 namespace lua{
 namespace bindings{
 

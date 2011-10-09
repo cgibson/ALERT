@@ -28,6 +28,7 @@
 <option id="gnu.cpp.compiler.exe.debug.option.debugging.level.396144496" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 <option id="gnu.cpp.compiler.option.include.paths.1658757456" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/AleRT/include}&quot;"/>
+<listOptionValue builtIn="false" value="/usr/include/OpenEXR"/>
 <listOptionValue builtIn="false" value="/usr/include/lua5.1"/>
 </option>
 <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1112203012" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>

@@ -13,7 +13,7 @@
 
 int main()
 {
-    Sphere s(0.5, glm::vec3(0));
+    geom::Sphere s(glm::vec3(0), 0.5);
 
 	printf("Hello, node.\n");
 

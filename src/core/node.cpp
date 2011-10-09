@@ -5,9 +5,11 @@
  *      Author: cgibson
  */
 
-#include "geom/node.hpp"
+#include "core/node.hpp"
 
-Node::Node( vec3 loc ): loc(loc) {
+using core::Node;
+
+Node::Node( vec3 const & loc ): loc(loc) {
 	// TODO Auto-generated constructor stub
 
 }

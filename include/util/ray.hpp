@@ -10,20 +10,24 @@
 
 #include "types.hpp"
 
-class Ray {
-public:
-	Ray(vec3 start, vec3 direction);
-	virtual ~Ray(){};
+namespace util {
 
-	string str();
+	class Ray {
+	public:
+		Ray(vec3 start, vec3 direction);
+		virtual ~Ray(){};
 
-	vec3 operator() (float t){ return p + (w * t); }
+		string str() const;
 
-	vec3 p;
-	vec3 w;
+		vec3 operator() (float t) const { return p + (w * t); }
 
-	float tMin;
-	float tMax;
-};
+		vec3 p;
+		vec3 w;
+
+		float tMin;
+		float tMax;
+	};
+
+}
 
 #endif /* RAY_HPP_ */

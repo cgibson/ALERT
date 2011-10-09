@@ -22,6 +22,8 @@ using glm::vec3;
 using glm::vec4;
 using glm::mat4;
 
+typedef glm::vec4 Spectrum;
+
 #define UNIMPLEMENTED_FUNC -1
 
 #endif /* TYPES_HPP_ */

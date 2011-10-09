@@ -25,19 +25,23 @@ testDir = "test"
 srcModules = [
               'geom',
               'util',
-              'lua'
+              'lua',
+              'light',
+              'core'
              ]
 
 testModules = [
                'glm',
-               'luabind'
+               'luabind',
+               'exr'
               ]
 
 # Paths to include from
 sysIncludePaths = [
                    'include',
                    'glm',
-                   '/usr/include/lua5.1'
+                   '/usr/include/lua5.1',
+                   '/usr/include/OpenEXR'
                   ]
 
 # Paths containing libraries
@@ -48,7 +52,8 @@ sysLibPaths = [
 # Libraries to reference
 sysLibs = [
            'boost_thread-mt',
-           'luabindd'
+           'luabindd',
+           'IlmImf'
           ]
           
 testLibs = [

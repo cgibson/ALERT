@@ -10,7 +10,9 @@
 #define GLM_FORCE_INLINE
 #include <glm/glm.hpp>
 
-GeometryNode::GeometryNode( vec3 loc ):Node(loc) {
+using geom::GeometryNode;
+
+GeometryNode::GeometryNode( vec3 const & loc ):Node(loc) {
 	// TODO Auto-generated constructor stub
 
 }

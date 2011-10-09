@@ -8,23 +8,24 @@
 #ifndef SPHERE_HPP_
 #define SPHERE_HPP_
 
-#include <string>
-
 #include "types.hpp"
 #include "geom/geometry.hpp"
 
-using std::string;
+namespace geom {
 
 class Sphere : public GeometryNode{
 
-public:
-	Sphere(glm::vec3 const & center, float radius);
+	public:
+		Sphere(glm::vec3 const & center, float radius);
 
-	float intersect(Ray const & ray){ return -1; };
-	string str();
+		virtual float intersect(util::Ray const & ray) const { return -1; };
+		virtual vec3 getNormal(vec3 const & p) const { return vec3(0,1,0); }
+		virtual string str() const;
 
-	float radius;
+		float radius;
 
-};
+	};
+
+}
 
 #endif /* SPHERE_HPP_ */
