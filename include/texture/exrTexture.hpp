@@ -51,7 +51,7 @@ namespace texture {
 		void read(string const & filename);
 		void write(string const & filename);
 		Spectrum & operator() (int index);
-		Spectrum uv(glm::vec2){ return Spectrum(1);}
+		Spectrum uvAt(UvCoord coord){ return Spectrum(1);}
 
 	private:
 		Spectrum *data;

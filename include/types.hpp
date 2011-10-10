@@ -23,6 +23,7 @@ using glm::vec4;
 using glm::mat4;
 
 typedef glm::vec4 Spectrum;
+typedef glm::vec2 UvCoord;
 
 #define UNIMPLEMENTED_FUNC -1
 

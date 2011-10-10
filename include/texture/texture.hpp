@@ -16,7 +16,7 @@ namespace texture{
 	public:
 		Texture(int width, int height);
 		virtual ~Texture();
-		virtual glm::vec4 uv(glm::vec2) = 0;
+		virtual glm::vec4 uvAt(UvCoord) = 0;
 
 	protected:
 		int width, height;
