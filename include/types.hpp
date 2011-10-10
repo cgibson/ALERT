@@ -26,8 +26,6 @@ using glm::mat4;
 
 typedef glm::vec4 Spectrum;
 
-typedef texture::ExrTexture Texture;
-
 #define UNIMPLEMENTED_FUNC -1
 
 #endif /* TYPES_HPP_ */
