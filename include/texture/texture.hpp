@@ -8,9 +8,20 @@
 #ifndef TEXTURE_HPP_
 #define TEXTURE_HPP_
 
-class Texture {
-public:
-	Texture();
-};
+#include "types.hpp"
+
+namespace texture{
+
+	class Texture {
+	public:
+		Texture(int width, int height);
+		virtual ~Texture();
+		virtual glm::vec4 uv(glm::vec2) = 0;
+
+	protected:
+		int width, height;
+	};
+
+}
 
 #endif /* TEXTURE_HPP_ */

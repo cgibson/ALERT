@@ -7,8 +7,6 @@
 
 #include "texture/exrTexture.hpp"
 
-#include "types.hpp"
-
 namespace texture {
 
 	// Code gathered from OpenEXR documentation at:
@@ -42,7 +40,7 @@ namespace texture {
 	}
 
 
-	ExrTexture::ExrTexture(int width, int height):width(width), height(height)
+	ExrTexture::ExrTexture(int width, int height):Texture(width, height)
 	{
 		data = new Spectrum[width * height];
 	}

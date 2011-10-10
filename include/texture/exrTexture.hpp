@@ -19,6 +19,10 @@
 
 #include <string>
 
+#include "types.hpp"
+
+#include "texture/texture.hpp"
+
 using std::string;
 
 using Imf::Rgba;
@@ -26,8 +30,6 @@ using Imf::RgbaOutputFile;
 using Imf::RgbaInputFile;
 using Imf::Array2D;
 using Imath::Box2i;
-
-typedef glm::vec4 Spectrum;
 
 namespace texture {
 
@@ -41,7 +43,7 @@ namespace texture {
 				int &width,
 				int &height);
 
-	class ExrTexture {
+	class ExrTexture : public Texture {
 	public:
 		ExrTexture(int width, int height);
 		~ExrTexture();
@@ -49,9 +51,9 @@ namespace texture {
 		void read(string const & filename);
 		void write(string const & filename);
 		Spectrum & operator() (int index);
+		Spectrum uv(glm::vec2){ return Spectrum(1);}
 
 	private:
-		int width, height;
 		Spectrum *data;
 	};
 

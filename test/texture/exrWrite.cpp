@@ -9,6 +9,8 @@
 
 #include "types.hpp"
 
+using texture::ExrTexture;
+
 int main()
 {
 	int width, height;
@@ -30,7 +32,7 @@ int main()
 	locations[3] = glm::vec2(384,384);
 	intensity[3] = 4.0;
 
-	Texture tex = Texture(width,height);
+	ExrTexture tex = ExrTexture(width,height);
 
 	for(int x = 0; x < width; x++) {
 		for(int y = 0; y < height; y++) {

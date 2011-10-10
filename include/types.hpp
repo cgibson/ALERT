@@ -15,8 +15,6 @@
 #include <sstream>
 #include <stdio.h>
 
-#include "texture/exrTexture.hpp"
-
 using std::string;
 using std::stringstream;
 
