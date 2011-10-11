@@ -33,16 +33,24 @@ namespace bindings{
 				.def(luabind::constructor<float, float, float>())
 				.def_readwrite("x", &glm::vec3::x)
 				.def_readwrite("y", &glm::vec3::y)
-				.def_readwrite("z", &glm::vec3::z),
+				.def_readwrite("z", &glm::vec3::z)
+				,
 
 			// Vec3 Binding
-//			luabind::class_<Spectrum>("Spectrum")
-//				.def(luabind::constructor<float, float, float>())
-//				.def_readwrite("r", &Spectrum::x)
-//				.def_readwrite("g", &Spectrum::y)
-//				.def_readwrite("b", &Spectrum::z)
-//				.def_readwrite("a", &Spectrum::z),
+				luabind::class_<Spectrum>("Spectrum")
+				.def(luabind::constructor<float, float, float, float>())
+				.def_readwrite("r", &Spectrum::r)
+				.def_readwrite("g", &Spectrum::g)
+				.def_readwrite("b", &Spectrum::b)
+				.def_readwrite("a", &Spectrum::a)
+				,
 
+			// UvCoord Binding
+				luabind::class_<UvCoord>("UvCoord")
+				.def(luabind::constructor<float, float>())
+				.def_readwrite("s", &UvCoord::s)
+				.def_readwrite("t", &UvCoord::t)
+				,
 			// Ray Binding
 			luabind::class_<Ray>("ray")
 				.def(luabind::constructor<glm::vec3, glm::vec3>())
@@ -50,7 +58,8 @@ namespace bindings{
 				.def_readwrite("p", &Ray::p)
 				.def_readwrite("w", &Ray::w)
 				.def_readwrite("tMin", &Ray::tMin)
-				.def_readwrite("tMax", &Ray::tMax),
+				.def_readwrite("tMax", &Ray::tMax)
+				,
 
 			// Sphere Binding
 		   luabind::class_<Sphere>("sphere")

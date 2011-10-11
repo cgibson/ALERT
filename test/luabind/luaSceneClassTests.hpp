@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
 
-#include "lua/bindings.hpp"
+#include "lua/helper.hpp"
 
 using namespace std;
 
@@ -12,13 +12,8 @@ BOOST_AUTO_TEST_CASE(luaTestSceneClass)
 {
 	printf("\nTESTING LUA SCENE CLASS BINDING\n");
 	// Create a new lua state
-	lua_State *myLuaState = lua_open();
 
-	// Connect LuaBind to this lua state
-	luabind::open(myLuaState);
-
-	// Export our class with LuaBind
-	lua::bindings::bindClasses(myLuaState);
+	lua_State *myLuaState = lua::state::getGlobalLuaState();
 
 	// Now use this class in a lua script
 	luaL_dostring(

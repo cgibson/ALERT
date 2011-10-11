@@ -41,6 +41,7 @@ testModules = [
 sysIncludePaths = [
                    'include',
                    'glm',
+                   '/usr/include/luajit-2.0/',
                    '/usr/include/lua5.1',
                    '/usr/include/OpenEXR'
                   ]
@@ -54,7 +55,8 @@ sysLibPaths = [
 sysLibs = [
            'boost_thread-mt',
            'luabind',
-           'IlmImf'
+           'IlmImf',
+           'luajit-5.1'
           ]
           
 testLibs = [
@@ -78,7 +80,7 @@ def buildPaths(paths, pathToRoot):
     return map(mapPath, paths)
     
 def getSource(module, pathToRoot = "."):
-    print join(pathToRoot, buildPath, module, "*.cpp")
+    #print join(pathToRoot, buildPath, module, "*.cpp")
     return Glob(join(pathToRoot, srcDir, module, "*.cpp"))
 
 

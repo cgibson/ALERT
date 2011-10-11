@@ -12,20 +12,35 @@
 #include "geom/sphere.hpp"
 #include "util/ray.hpp"
 
+extern "C"
+{
+    #include <lua.h>
+}
+#include <luabind/luabind.hpp>
+
 using core::Node;
 using geom::Sphere;
 using util::Ray;
 
 namespace lua{
+
+namespace state{
+
+		extern lua_State*	getGlobalLuaState();
+		extern void 		setGlobal(string resourceName, void *resource);
+		extern void*		getGlobal(string resourceName);
+}
+
 namespace bindings{
 namespace helper{
 
-	extern void printNode(Node const &);
-	extern void printRay(Ray const &);
-	extern void printSphere(Sphere const &);
+		extern void 		printNode(Node const &);
+		extern void 		printRay(Ray const &);
+		extern void 		printSphere(Sphere const &);
 
 }
 }
+
 }
 
 #endif /* HELPER_HPP_ */

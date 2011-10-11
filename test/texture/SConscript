@@ -11,8 +11,11 @@ setupEnv(texEnv, pathToRoot)
 
 outDir = join(getBuildPath(pathToRoot), testDir, "texture")
 
-sources = Glob('*.cpp')
-sources = sources + getSource("texture", pathToRoot)
+sources = getSource("texture", pathToRoot)
+sources = sources + getSource("lua", pathToRoot)
+sources = sources + getSource("geom", pathToRoot)
+sources = sources + getSource("util", pathToRoot)
+sources = sources + getSource("core", pathToRoot)
 
 objects = []
 
@@ -21,4 +24,8 @@ for source in sources:
     name = (source.split("/")[-1]).split(".")[0]
     objects.append(texEnv.Object(join(outDir, name), source))
 
-texEnv.Program(join(outDir,"texture"), objects)
+exrWriteObj = texEnv.Object(join(outDir, "exrWrite"), "exrWrite.cpp")
+procTestObj = texEnv.Object(join(outDir, "procTest"), "procTest.cpp") 
+
+texEnv.Program(join(outDir, "exrWrite"), objects + [exrWriteObj])
+texEnv.Program(join(outDir,"procTest"), objects + [procTestObj])
