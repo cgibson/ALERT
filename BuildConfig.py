@@ -41,7 +41,7 @@ testModules = [
 sysIncludePaths = [
                    'include',
                    'glm',
-                   '/usr/include/luajit-2.0/',
+                   #'/usr/include/luajit-2.0/',
                    '/usr/include/lua5.1',
                    '/usr/include/OpenEXR'
                   ]
@@ -56,7 +56,7 @@ sysLibs = [
            'boost_thread-mt',
            'luabind',
            'IlmImf',
-           'luajit-5.1'
+           #'luajit-5.1'
           ]
           
 testLibs = [

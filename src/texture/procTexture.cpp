@@ -12,13 +12,18 @@ namespace texture{
 	ProceduralTexture::ProceduralTexture(int width, int height):
 					Texture(width, height)
 	{
-		script = "outColor = Spectrum(uv.s, uv.t, 1.0, 1.0)";
-		state = lua::state::getGlobalLuaState();
+		script = "function main (uv)\n"
+				 "  return Spectrum(uv.s, uv.t, 1.0, 1.0)\n"
+				 "end\n";
+
+		state = lua::state::createLocalLuaState();
+
+		lua::state::loadLuaScript(state, script);
 	}
 
 	ProceduralTexture::~ProceduralTexture()
 	{
-
+		free(state);
 	}
 
 	void
@@ -30,9 +35,7 @@ namespace texture{
 	Spectrum
 	ProceduralTexture::uvAt(UvCoord uv)
 	{
-		luabind::globals(state)["uv"] = &uv;
-		luaL_dostring(state, script.c_str());
-		Spectrum out = luabind::object_cast<Spectrum>(luabind::globals(state)["outColor"]);
+		Spectrum out = luabind::call_function<Spectrum>(state, "main", uv);
 
 		return out;
 	}

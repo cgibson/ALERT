@@ -18,6 +18,20 @@ namespace state{
 		//int ret = luaJIT_setmode(luaState, 0, LUAJIT_MODE_ALLFUNC);
 	}
 
+	lua_State *createLocalLuaState()
+	{
+		lua_State *lstate = lua_open();
+		luabind::open(lstate);
+		lua::bindings::bindClasses(lstate);
+
+		return lstate;
+	}
+
+	void loadLuaScript(lua_State *state, string script)
+	{
+		luaL_dostring(state, script.c_str());
+	}
+
 	lua_State *getGlobalLuaState()
 	{
 		if (luaState == NULL) {
