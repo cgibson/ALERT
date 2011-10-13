@@ -23,7 +23,7 @@ namespace texture{
 
 	ProceduralTexture::~ProceduralTexture()
 	{
-		free(state);
+		//free(state);
 	}
 
 	void

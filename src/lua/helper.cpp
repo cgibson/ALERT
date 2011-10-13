@@ -23,6 +23,7 @@ namespace state{
 		lua_State *lstate = lua_open();
 		luabind::open(lstate);
 		lua::bindings::bindClasses(lstate);
+		//int ret = luaJIT_setmode(lstate, 0, LUAJIT_MODE_ALLFUNC);
 
 		return lstate;
 	}
