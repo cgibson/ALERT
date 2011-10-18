@@ -1,22 +1,22 @@
 /*
- * geometry.cpp
+ * shape.cpp
  *
  *  Created on: Oct 2, 2011
  *      Author: cgibson
  */
 
-#include "geom/geometry.hpp"
+#include "geom/shape.hpp"
 
 #define GLM_FORCE_INLINE
 #include <glm/glm.hpp>
 
-using geom::GeometryNode;
+using geom::Shape;
 
-GeometryNode::GeometryNode( vec3 const & loc ):Node(loc) {
+Shape::Shape( vec3 const & loc ):Node(loc) {
 	// TODO Auto-generated constructor stub
 
 }
 
-GeometryNode::~GeometryNode() {
+Shape::~Shape() {
 	// TODO Auto-generated destructor stub
 }

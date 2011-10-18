@@ -17,7 +17,7 @@ using geom::Plane;
 
 Plane::Plane(glm::vec3 const & center, glm::vec3 const & normal):
 	normal(normal),
-	GeometryNode(center)
+	Shape(center)
 {
 
 }

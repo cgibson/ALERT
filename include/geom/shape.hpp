@@ -5,8 +5,8 @@
  *      Author: cgibson
  */
 
-#ifndef GEOMETRY_HPP_
-#define GEOMETRY_HPP_
+#ifndef SHAPE_HPP_
+#define SHAPE_HPP_
 
 #include <stdio.h>
 
@@ -19,10 +19,10 @@ using core::Node;
 
 namespace geom {
 
-	class GeometryNode : public Node{
+	class Shape : public Node{
 	public:
-		GeometryNode( vec3 const & loc );
-		virtual ~GeometryNode();
+		Shape( vec3 const & loc );
+		virtual ~Shape();
 
 		virtual float intersect(util::Ray const & ray) const { printf("ERROR: unimplemented"); exit(UNIMPLEMENTED_FUNC); }
 		virtual vec3 getNormal(vec3 const & p) const { return vec3(0,1,0); }
@@ -32,4 +32,4 @@ namespace geom {
 
 }
 
-#endif /* GEOMETRY_HPP_ */
+#endif /* SHAPE_HPP_ */

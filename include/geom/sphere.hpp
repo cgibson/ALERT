@@ -9,11 +9,11 @@
 #define SPHERE_HPP_
 
 #include "types.hpp"
-#include "geom/geometry.hpp"
+#include "geom/shape.hpp"
 
 namespace geom {
 
-class Sphere : public GeometryNode{
+class Sphere : public Shape{
 
 	public:
 		Sphere(glm::vec3 const & center, float radius);

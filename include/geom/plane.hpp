@@ -9,11 +9,11 @@
 #define PLANE_HPP_
 
 #include "types.hpp"
-#include "geom/geometry.hpp"
+#include "geom/shape.hpp"
 
 namespace geom {
 
-	class Plane : public GeometryNode{
+	class Plane : public Shape{
 
 	public:
 		Plane(glm::vec3 const & center, glm::vec3 const & normal);

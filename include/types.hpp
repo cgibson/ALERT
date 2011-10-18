@@ -24,6 +24,7 @@ using glm::mat4;
 
 typedef glm::vec4 Spectrum;
 typedef glm::vec2 UvCoord;
+typedef struct{float x; float y;} Dimension;
 
 #define UNIMPLEMENTED_FUNC -1
 

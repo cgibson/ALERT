@@ -9,7 +9,7 @@
 #define LIGHT_HPP_
 
 #include "types.hpp"
-#include "geom/geometry.hpp"
+#include "geom/shape.hpp"
 
 namespace light {
 

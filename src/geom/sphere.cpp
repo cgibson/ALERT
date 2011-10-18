@@ -17,7 +17,7 @@ using geom::Sphere;
 
 Sphere::Sphere(vec3 const & center, float radius):
 	radius(radius),
-	GeometryNode(center)
+	Shape(center)
 {
 
 }

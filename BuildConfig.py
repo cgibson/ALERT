@@ -56,7 +56,8 @@ sysLibs = [
            'boost_thread-mt',
            'luajit-5.1',
            'luabind',
-           'IlmImf'
+           'IlmImf',
+           'Half'
           ]
           
 testLibs = [
