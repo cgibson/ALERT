@@ -5,6 +5,8 @@
  *      Author: cgibson
  */
 
+#include "camera/camera.hpp"
+
 Camera::Camera()
 {
 

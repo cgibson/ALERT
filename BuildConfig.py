@@ -28,7 +28,10 @@ srcModules = [
               'lua',
               'light',
               'core',
-              'texture'
+              'texture',
+              'camera',
+              'render',
+              'scene'
              ]
 
 testModules = [

@@ -25,6 +25,7 @@ using glm::mat4;
 typedef glm::vec4 Spectrum;
 typedef glm::vec2 UvCoord;
 typedef struct{float x; float y;} Dimension;
+typedef struct{glm::vec3 p; float t; glm::vec3 n;} Intersect;
 
 #define UNIMPLEMENTED_FUNC -1
 
