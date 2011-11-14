@@ -6,7 +6,12 @@ env = Environment(CC = compilerType)
 
 Export("env")
 
-if not isTestBuild():
-    SConscript('SConscript')
+if isLibRebuild():
+    print "Rebuilding Libs"
+    rebuildLibs()
 else:
-    SConscript(join(testDir, 'SConscript'))
+    
+    if not isTestBuild():
+        SConscript('SConscript')
+    else:
+        SConscript(join(testDir, 'SConscript'))

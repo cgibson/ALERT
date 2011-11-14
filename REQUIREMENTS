@@ -1,6 +1,7 @@
-Lua Bind
 bjam
 Boost-Install
 IlmImf
-Lua 5.1
-LuaJIT 2.0
+Boost All-Dev
+libreadline6
+libreadline6-dev
+

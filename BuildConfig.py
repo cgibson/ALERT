@@ -5,6 +5,8 @@ from SCons.Script import *
 from os.path import join
 from os import path
 
+from LibConfig import *
+
 #------------------------------------------------------------------------------#
 
 programName = 'AleRT'
@@ -15,11 +17,15 @@ compilerType = 'g++'
 
 buildPath = "build"
 
+buildLibPath = buildPath + "/lib"
+
 # No source besides include files and test files should exist outside of here
 srcDir = "src"
 
 # Test directory
 testDir = "test"
+
+externPath = "extern"
 
 # These lie under the source directory
 srcModules = [
@@ -44,21 +50,24 @@ testModules = [
 sysIncludePaths = [
                    'include',
                    'glm',
-                   '/usr/include/luajit-2.0/',
+                   'extern/include/',
+                   'extern/include/luajit/',
+                   'extern/include/luabind/',
                    #'/usr/include/lua5.1',
-                   '/usr/include/OpenEXR'
+                   'extern/include/OpenEXR'
                   ]
 
 # Paths containing libraries
 sysLibPaths = [
-               'lib'
+               'lib',
+               'extern/lib'
               ]
 
 # Libraries to reference
 sysLibs = [
            'boost_thread-mt',
-           'luajit-5.1',
-           'luabind',
+           'luajit',
+           'luabindd',
            'IlmImf',
            'Half'
           ]
@@ -74,6 +83,9 @@ def isDebugBuild():
 
 def isTestBuild():
     return ARGUMENTS.get('test', 0)
+
+def isLibRebuild():
+    return ARGUMENTS.get('rebuild-libs', 0)
     
     
 def getBuildPath(pathToRoot = "."):
@@ -120,4 +132,10 @@ def initialize(pathToRoot = "."):
     conf = Configure(env)
     
     return env, conf
+
+
+def rebuildLibs():
+    buildAllLibs()
     
+def moveLibs():
+    moveAllLibs(buildLibPath)
