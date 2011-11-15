@@ -53,7 +53,7 @@ sysIncludePaths = [
                    'extern/include/',
                    'extern/include/luajit/',
                    'extern/include/luabind/',
-                   #'/usr/include/lua5.1',
+                   'extern/include/lua',
                    'extern/include/OpenEXR'
                   ]
 
@@ -67,9 +67,11 @@ sysLibPaths = [
 sysLibs = [
            'boost_thread-mt',
            'luajit',
+           #'lua',
            'luabindd',
            'IlmImf',
-           'Half'
+           'Half',
+           'dl'
           ]
           
 testLibs = [

@@ -8,12 +8,12 @@
 #ifndef BINDINGS_HPP_
 #define BINDINGS_HPP_
 
-//extern "C"
-//{
-//    #include <lua.h>
-//}
+extern "C"
+{
+    #include <lua.h>
+}
 
-#include "lua.hpp"
+//#include "lua.h"
 
 #include <luabind/luabind.hpp>
 

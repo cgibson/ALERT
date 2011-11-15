@@ -109,7 +109,7 @@ def buildLuaBind(externPath, libPath):
         with EnvirContextManager({"LUA_PATH":externPath}):
             
             #os.system("echo $LUA_PATH")
-            os.system("bjam --prefix=%s install" % externPath)
+            os.system("bjam link=static --prefix=%s install" % externPath)
                 
 def buildLuaJIT(externPath, libPath):
     libName = "LuaJIT"
@@ -131,10 +131,10 @@ def buildLuaJIT(externPath, libPath):
         # Copy Include
         copyHeaders("src", join(incPath, "luajit"))
         
-        # Create lua sym link to includes (if we didn't make lua)
+        # Create lua sym link to includes (ONLY if we didn't make lua already)
         print "LINKING [%s] --> [%s]" % (join(incPath, "luajit"), join(incPath, "lua51"))
 
-        if not path.exists(join(incPath, "lua51")):
+        if not path.exists(join(incPath, "lua")):
             os.symlink(join(incPath, "luajit"), join(incPath, "lua51"))
         
         # Create lua lib link to luajit (if we didn't make lua)
@@ -155,36 +155,20 @@ def buildIlmBase(externPath, libPath):
         os.system("make install")
         
         incPath = join(externPath, "include")
-        
-        # Copy Include
-        #copyHeaders("IlmImf", join(incPath, "IlmImf"))
-        
-        #os.system("sed -i 's/#include <iostream>/#include <iostream>\\n#include <cstring>/g' %s/OpenEXR/ImathMatrix.h" % incPath)
                 
 def buildOpenEXR(externPath, libPath):
     libName = "OpenEXR"
     libNameLong = "openexr-1.7.0"
 
-    envirDict = {
-                 #"LDFLAGS":"%s:/usr/lib:/usr/local/lib:/lib" % libPath
-                 #"ILMBASE_CXXFLAGS":"-I%s" % join(externPath, "include/OpenEXR"),
-                 #"ILMBASE_LDFLAGS":"-L%s" % join(externPath,"lib")
-                 }
-
     with TarContextManager(join(externPath, libNameLong + ".tar.gz"), externPath, libNameLong):
-        with EnvirContextManager(envirDict):
 
-            # PATCH to fix gcc 4.3.2 compatability issus          
-            os.system("sed -i 's/#include <iostream>/#include <iostream>\\n#include <cstring>/g' exrenvmap/blurImage.cpp")
-
-            os.system("./configure --prefix=%s" % externPath)
-            os.system("make")
-            os.system("make install")
-            
-            #incPath = join(externPath, "include")
-            
-            # Copy Include
-            # copyHeaders("IlmImf", join(incPath, "IlmImf"))
+        # PATCH to fix gcc 4.3.2 compatability issus          
+        os.system("sed -i 's/#include <iostream>/#include <iostream>\\n#include <cstring>/g' exrenvmap/blurImage.cpp")
+        
+        # Compile
+        os.system("./configure --prefix=%s" % externPath)
+        os.system("make")
+        os.system("make install")
 
 
 def buildLua(externPath, libPath):

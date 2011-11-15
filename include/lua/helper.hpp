@@ -12,13 +12,13 @@
 #include "geom/sphere.hpp"
 #include "util/ray.hpp"
 
-//extern "C"
-//{
-//    #include <lua.h>
-//
-//}
+extern "C"
+{
+    #include <lua.h>
 
-#include "lua.hpp"
+}
+
+//#include "lua.hpp"
 
 #include <luabind/luabind.hpp>
 
