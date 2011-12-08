@@ -2,8 +2,10 @@
 *.so
 *.pyc
 *.dblite
+*.swp
 
 docs
 build
 Debug
 AleRT
+extern/*/
