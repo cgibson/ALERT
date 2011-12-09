@@ -8,6 +8,8 @@ from LibConfig import *
 
 #------------------------------------------------------------------------------#
 
+archNum = "64"
+
 # Program to output
 programName = 'AleRT'
 
@@ -48,9 +50,9 @@ srcModules = [
 
 # Modules referenced by the test source code
 testModules = [
-               #'glm',
-               #'luabind',
-               #'texture',
+               'glm',
+               'luabind',
+               'texture',
                'Field3D'
               ]
 
@@ -73,19 +75,19 @@ sysLibPaths = [
 
 # Libraries to reference
 sysLibs = [
-           'boost_thread-mt',
-           'Field3D',
-           'luajit',
-           'Imath',
-           'hdf5',
-           #'hdf5_hl',
-           'Iex',
-           'IlmThread',
-           #'lua',
-           'luabindd',
-           'IlmImf',
-           'Half',
-           'dl'
+           'boost_thread-mt', # Because everything needs boost
+           'Field3D',         # Pure volume-structure awesomeness
+           'luajit',          # Super fast lua (supposedly)
+           'Imath',           # Maths, let me tell you about them
+           'hdf5',            # Some awesome extendable file format
+           'Iex',             # Something something something Field3D
+           'IlmThread',       # Throw more threads at it and it will go faster
+           #'lua',            # We use luaJIT as a replacement for Lua51
+           'luabindd',        # Bind our luas to our C++
+           'IlmImf',          # Ilm makes a lot of cool stuff.
+           'Half',            # Required for OpenEXR
+           'dl',              # Required for god only knows why
+           'z'                # Required for gzip performance on hdf5
           ]
           
 testLibs = [
@@ -182,7 +184,7 @@ def initialize(pathToRoot = "."):
 
 ## rebuildLibs runs the "buildAllLibs" method within the libConfig module
 def rebuildLibs():
-    buildAllLibs()
+    buildAllLibs(archNum)
     
 ## moveLibs moves all libs to the build library path for use in the build
 #  folder structure

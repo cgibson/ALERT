@@ -3,6 +3,7 @@
 *.pyc
 *.dblite
 *.swp
+*.exr
 
 docs
 build

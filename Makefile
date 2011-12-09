@@ -9,6 +9,9 @@ clean:
 	rm -r docs
 	rm -r build
 
+libs:
+	scons rebuild-libs=1
+
 doc:
 	doxygen doxygen.conf
 

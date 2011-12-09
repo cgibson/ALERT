@@ -303,7 +303,7 @@ def buildHdf5(externPath, libPath):
 ## buildField3D builds Sony ImageWorks' open source volume library
 #  @param externPath: The location to uncompress the tar
 #  @param libPath: Where to place the lib once we are done
-def buildField3D(externPath, libPath):
+def buildField3D(externPath, libPath, archNum="32"):
     libName = "Field3D"             # Library name is used in error messages
     libNameLong = "Field3D"   # Long library name is used as the tar name
     libFile = "libField3D.a"
@@ -336,24 +336,23 @@ def buildField3D(externPath, libPath):
         replaceInFile("Site.py", "boost_thread-gcc34-mt", "boost_thread-mt")
         
         # Compile
-        os.system("scons")
+        os.system("scons do64=1")
         
         # Copy lib
-        shutil.copy("install/linux2/m32/release/lib/libField3D.a", libPath)
+        shutil.copy("install/linux2/m%s/release/lib/libField3D.a" % archNum, libPath)
         
         # Copy Include
-        copyHeaders("install/linux2/m32/release/include/Field3D", join(incPath, "Field3D"))
+        copyHeaders("install/linux2/m%s/release/include/Field3D" % archNum, join(incPath, "Field3D"))
           
           
 ## buildAllLibs will go through and build each required lib one at a time.
 #  After all of the build* methods have been run, the extern/lib folder
 #  should be filled with ready-to-use static libraries.      
-def buildAllLibs():
+def buildAllLibs(archNum):
         
     # Necessary paths
     externPath = path.abspath("extern")
     libPath = path.abspath("extern/lib")
-    
     
     # Sanity checks
     if not path.exists(externPath):
@@ -368,4 +367,4 @@ def buildAllLibs():
     buildIlmBase(externPath, libPath)
     buildOpenEXR(externPath, libPath)
     buildHdf5(externPath, libPath)
-    buildField3D(externPath, libPath)
+    buildField3D(externPath, libPath, archNum=archNum)
