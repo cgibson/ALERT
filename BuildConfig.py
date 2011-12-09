@@ -31,6 +31,8 @@ testDir = "test"
 
 externPath = "extern"
 
+
+sysDefines = {} #{"FIELD3D_EXTRA_NAMESPACE":"SPI"}
 # These lie under the source directory
 srcModules = [
               'geom',
@@ -46,9 +48,10 @@ srcModules = [
 
 # Modules referenced by the test source code
 testModules = [
-               'glm',
-               'luabind',
-               'texture'
+               #'glm',
+               #'luabind',
+               #'texture',
+               'Field3D'
               ]
 
 # Paths to include from
@@ -71,7 +74,13 @@ sysLibPaths = [
 # Libraries to reference
 sysLibs = [
            'boost_thread-mt',
+           'Field3D',
            'luajit',
+           'Imath',
+           'hdf5',
+           #'hdf5_hl',
+           'Iex',
+           'IlmThread',
            #'lua',
            'luabindd',
            'IlmImf',
@@ -146,6 +155,9 @@ def setupEnv(env, pathToRoot = "."):
     
     # Libraries
     env.Replace(LIBS = sysLibs)
+    
+    # Defines
+    env.AppendUnique(CPPDEFINES=sysDefines)
     
     # Test libraries
     if(isTestBuild()):

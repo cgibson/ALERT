@@ -84,7 +84,21 @@ class EnvirContextManager(object):
     def __exit__(self, type, value, traceback):
         for key, value in self.oldDict.iteritems():
             os.environ[key] = value
-        
+            
+            
+## replaceInFile runs a sed command on the file, allowing us to search and
+#  replace certain patterns within a file
+#  @param file: File to run the sed command on
+#  @param pattern: String pattern to replace
+#  @param replace: Replacement string
+def replaceInFile(file, pattern, replace):
+        pattern = pattern.replace("/", "\/")
+        replace = replace.replace("/", "\/")
+        pattern = pattern.replace("[", "\[")
+        replace = replace.replace("[", "\[")
+        print "sed -i 's/%s/%s/g' %s" % (pattern, replace, file)
+        return os.system("sed -i 's/%s/%s/g' %s" % (pattern, replace, file))
+
 
 ## copyHeaders recursively visits a folder structure, copying all headers it 
 #  finds into a equivalent folder structure, leaving everything else out
@@ -120,6 +134,11 @@ def copyHeaders(inPath, outPath):
 def buildLuaBind(externPath, libPath):
     libName = "LuaBind"             # Library name is used in error messages
     libNameLong = "luabind-0.9.1"   # Long library name is used as the tar name
+    libFile = "libluabindd.a"
+    
+    if path.exists(join(libPath, libFile)):
+        print "Skipping %s -- Already Built" % libName
+        return
     
     with TarContextManager(join(externPath, libNameLong + ".tar.gz"), externPath, libNameLong):
         
@@ -139,7 +158,12 @@ def buildLuaBind(externPath, libPath):
 def buildLuaJIT(externPath, libPath):
     libName = "LuaJIT"                  # Library name is used in error messages
     libNameLong = "LuaJIT-2.0.0-beta8"  # Long library name is used as the tar name
-
+    libFile = "libluajit.a"
+    
+    if path.exists(join(libPath, libFile)):
+        print "Skipping %s -- Already Built" % libName
+        return
+    
     with TarContextManager(join(externPath, libNameLong + ".tar.gz"), externPath, libNameLong):
         
         print "currently in %s" % os.getcwd()
@@ -150,7 +174,7 @@ def buildLuaJIT(externPath, libPath):
         os.system("make")
         
         # Copy lib
-        shutil.copy("src/libluajit.a", libPath)
+        shutil.copy(join("src", libFile), libPath)
         
         incPath = join(externPath, "include")
         
@@ -160,7 +184,7 @@ def buildLuaJIT(externPath, libPath):
         # Create lua sym link to includes (ONLY if we didn't make lua already)
         print "LINKING [%s] --> [%s]" % (join(incPath, "luajit"), join(incPath, "lua51"))
 
-        if not path.exists(join(incPath, "lua")):
+        if not path.exists(join(incPath, "lua51")):
             os.symlink(join(incPath, "luajit"), join(incPath, "lua51"))
         
         # Create lua lib link to luajit (if we didn't make lua)
@@ -176,7 +200,12 @@ def buildLuaJIT(externPath, libPath):
 def buildIlmBase(externPath, libPath):
     libName = "IlmBase"             # Library name is used in error messages
     libNameLong = "ilmbase-1.0.2"   # Long library name is used as the tar name
-
+    libFile = "libImath.a"
+    
+    if path.exists(join(libPath, libFile)):
+        print "Skipping %s -- Already Built" % libName
+        return
+    
     with TarContextManager(join(externPath, libNameLong + ".tar.gz"), externPath, libNameLong):
         
         # PATCH to fix gcc 4.3.2 compatability issus
@@ -187,6 +216,7 @@ def buildIlmBase(externPath, libPath):
         os.system("make install")
         
         incPath = join(externPath, "include")
+        copyHeaders("Imath", join(incPath, "Imath"))
 
 
 ## buildOpenExr also makes modifications to a few of its files in order to fix a
@@ -198,6 +228,11 @@ def buildIlmBase(externPath, libPath):
 def buildOpenEXR(externPath, libPath):
     libName = "OpenEXR"             # Library name is used in error messages
     libNameLong = "openexr-1.7.0"   # Long library name is used as the tar name
+    libFile = "libIlmImf.a"
+    
+    if path.exists(join(libPath, libFile)):
+        print "Skipping %s -- Already Built" % libName
+        return
 
     with TarContextManager(join(externPath, libNameLong + ".tar.gz"), externPath, libNameLong):
 
@@ -218,7 +253,12 @@ def buildOpenEXR(externPath, libPath):
 def buildLua(externPath, libPath):
     libName = "Lua"             # Library name is used in error messages
     libNameLong = "lua-5.1.4"   # Long library name is used as the tar name
-
+    libFile = "liblua.a"
+    
+    if path.exists(join(libPath, libFile)):
+        print "Skipping %s -- Already Built" % libName
+        return
+    
     with TarContextManager(join(externPath, libNameLong + ".tar.gz"), externPath, libNameLong):
         
         # First, find and replace the line in the Makefile that includes the CFLAGS.  We want
@@ -233,6 +273,76 @@ def buildLua(externPath, libPath):
         # Copy Include
         incPath = join(externPath, "include")
         copyHeaders("src", join(incPath, "lua"))
+
+
+## buildHdf5 builds the extensible file format library used primarily for our
+#  volume code.
+#  @param externPath: The location to uncompress the tar
+#  @param libPath: Where to place the lib once we are done
+def buildHdf5(externPath, libPath):
+    libName = "Hdf5"             # Library name is used in error messages
+    libNameLong = "hdf5-1.8.8"   # Long library name is used as the tar name
+    libFile = "libhdf5.a"
+    
+    if path.exists(join(libPath, libFile)):
+        print "Skipping %s -- Already Built" % libName
+        return
+    
+    with TarContextManager(join(externPath, libNameLong + ".tar.gz"), externPath, libNameLong):
+        
+        # Compile
+        os.system("./configure --prefix=%s" % externPath)
+        os.system("make")
+        os.system("make install")
+        
+        # Copy Include
+        incPath = join(externPath, "include")
+        copyHeaders("src", join(incPath, "hdf5"))
+
+
+## buildField3D builds Sony ImageWorks' open source volume library
+#  @param externPath: The location to uncompress the tar
+#  @param libPath: Where to place the lib once we are done
+def buildField3D(externPath, libPath):
+    libName = "Field3D"             # Library name is used in error messages
+    libNameLong = "Field3D"   # Long library name is used as the tar name
+    libFile = "libField3D.a"
+    
+    incPath = join(externPath, "include")
+    
+    if path.exists(join(libPath, libFile)):
+        print "Skipping %s -- Already Built" % libName
+        return
+    
+    with TarContextManager(join(externPath, libNameLong + ".tar.gz"), externPath, libNameLong):
+        
+        # Copy "Site.py" build configuration
+        shutil.copy("ExampleSite.py", "Site.py")
+        
+        # Replace/add include and library folders:
+        replaceInFile("Site.py", "mathIncPaths = [", "mathIncPaths = [\"%s\",\"%s\"," %
+                      (join(incPath, "Imath"), incPath))
+        
+        replaceInFile("Site.py", "mathLibPaths = [", "mathLibPaths = [\"%s\"," %
+                      libPath)
+        
+        replaceInFile("Site.py", "incPaths = [", "incPaths = [\"%s\"," % incPath)
+        
+        replaceInFile("Site.py", "libPaths = [", "libPaths = [\"%s\"," % libPath)
+        
+        replaceInFile("Site.py", "extraNamespace = \"SPI\"", "")
+        
+        # Include correct boost thread library
+        replaceInFile("Site.py", "boost_thread-gcc34-mt", "boost_thread-mt")
+        
+        # Compile
+        os.system("scons")
+        
+        # Copy lib
+        shutil.copy("install/linux2/m32/release/lib/libField3D.a", libPath)
+        
+        # Copy Include
+        copyHeaders("install/linux2/m32/release/include/Field3D", join(incPath, "Field3D"))
           
           
 ## buildAllLibs will go through and build each required lib one at a time.
@@ -257,3 +367,5 @@ def buildAllLibs():
     buildLuaBind(externPath, libPath)
     buildIlmBase(externPath, libPath)
     buildOpenEXR(externPath, libPath)
+    buildHdf5(externPath, libPath)
+    buildField3D(externPath, libPath)
