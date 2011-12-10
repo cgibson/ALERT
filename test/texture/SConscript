@@ -3,29 +3,25 @@ from BuildConfig import *
 
 Import('testEnv')
 
-texEnv = testEnv.Clone()
+#testEnv = testEnv.Clone()
 
 pathToRoot = "../.."
 
-setupEnv(texEnv, pathToRoot)
+setupEnv(testEnv, pathToRoot)
 
-outDir = join(getBuildPath(pathToRoot), testDir, "texture")
-
-sources = getSource("texture", pathToRoot)
-sources = sources + getSource("lua", pathToRoot)
-sources = sources + getSource("geom", pathToRoot)
-sources = sources + getSource("util", pathToRoot)
-sources = sources + getSource("core", pathToRoot)
+outDir = join(getBuildPath(pathToRoot), "texture")
 
 objects = []
 
-for source in sources:
-    source = str(source)
-    name = (source.split("/")[-1]).split(".")[0]
-    objects.append(texEnv.Object(join(outDir, name), source))
+objects = objects + buildSource("texture",testEnv, pathToRoot)
+objects = objects + buildSource("geom",testEnv, pathToRoot)
+objects = objects + buildSource("util",testEnv, pathToRoot)
+objects = objects + buildSource("core",testEnv, pathToRoot)
+objects = objects + buildSource("light",testEnv, pathToRoot)
+objects = objects + buildSource("lua",testEnv, pathToRoot)
 
-exrWriteObj = texEnv.Object(join(outDir, "exrWrite"), "exrWrite.cpp")
-procTestObj = texEnv.Object(join(outDir, "procTest"), "procTest.cpp") 
+exrWriteObj = testEnv.Object(join(outDir, "testExrWrite"), "exrWrite.cpp")
+procTestObj = testEnv.Object(join(outDir, "testProcExr"), "procTest.cpp") 
 
-texEnv.Program(join(outDir, "exrWrite"), objects + [exrWriteObj])
-texEnv.Program(join(outDir,"procTest"), objects + [procTestObj])
+testEnv.Program(join(getBuildPath(pathToRoot), testPath, "EXR-WriteTest"), objects + [exrWriteObj])
+testEnv.Program(join(getBuildPath(pathToRoot), testPath,"EXR-ProcTest"), objects + [procTestObj])

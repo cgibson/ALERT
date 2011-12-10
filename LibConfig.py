@@ -6,6 +6,7 @@ from os import path
 import os
 import tarfile
 import shutil
+import distutils.dir_util
 
 
 ## UnzipLib will take the given library and pull it from its tar file,
@@ -169,7 +170,9 @@ def buildLuaJIT(externPath, libPath):
         print "currently in %s" % os.getcwd()
         # First, find and replace the line in the Makefile that includes the CFLAGS.  We want
         # to add -fPIC near the end
-        os.system("sed -i 's/CCWARN= -Wall/CCWARN= -Wall -fPIC/g' %s" % "src/Makefile")
+        replaceInFile("src/Makefile", 
+                      "CCWARN= -Wall", 
+                      "CCWARN= -Wall -fPIC")
         
         os.system("make")
         
@@ -197,10 +200,10 @@ def buildLuaJIT(externPath, libPath):
 #  includes are added to a select few source files automatically
 #  @param externPath: The location to uncompress the tar
 #  @param libPath: Where to place the lib once we are done              
-def buildIlmBase(externPath, libPath):
+def buildIlmBase(externPath, libPath, confOpts=[]):
     libName = "IlmBase"             # Library name is used in error messages
     libNameLong = "ilmbase-1.0.2"   # Long library name is used as the tar name
-    libFile = "libImath.a"
+    libFile = "libImath.so"
     
     if path.exists(join(libPath, libFile)):
         print "Skipping %s -- Already Built" % libName
@@ -209,9 +212,11 @@ def buildIlmBase(externPath, libPath):
     with TarContextManager(join(externPath, libNameLong + ".tar.gz"), externPath, libNameLong):
         
         # PATCH to fix gcc 4.3.2 compatability issus
-        os.system("sed -i 's/#include <iostream>/#include <iostream>\\n#include <cstring>/g' Imath/ImathMatrix.h")
+        replaceInFile(" Imath/ImathMatrix.h", 
+                      "#include <iostream>", 
+                      "#include <iostream>\\n#include <cstring>")
         
-        os.system("./configure --prefix=%s" % externPath)
+        os.system("./configure %s" % " ".join(confOpts))
         os.system("make")
         os.system("make install")
         
@@ -225,10 +230,10 @@ def buildIlmBase(externPath, libPath):
 #  color range
 #  @param externPath: The location to uncompress the tar
 #  @param libPath: Where to place the lib once we are done     
-def buildOpenEXR(externPath, libPath):
+def buildOpenEXR(externPath, libPath, confOpts=[]):
     libName = "OpenEXR"             # Library name is used in error messages
     libNameLong = "openexr-1.7.0"   # Long library name is used as the tar name
-    libFile = "libIlmImf.a"
+    libFile = "libIlmImf.so"
     
     if path.exists(join(libPath, libFile)):
         print "Skipping %s -- Already Built" % libName
@@ -236,11 +241,13 @@ def buildOpenEXR(externPath, libPath):
 
     with TarContextManager(join(externPath, libNameLong + ".tar.gz"), externPath, libNameLong):
 
-        # PATCH to fix gcc 4.3.2 compatibility issus          
-        os.system("sed -i 's/#include <iostream>/#include <iostream>\\n#include <cstring>/g' exrenvmap/blurImage.cpp")
+        # PATCH to fix gcc 4.3.2 compatibility issus   
+        replaceInFile("exrenvmap/blurImage.cpp", 
+                      "#include <iostream>", 
+                      "#include <iostream>\\n#include <cstring>")
         
         # Compile
-        os.system("./configure --prefix=%s" % externPath)
+        os.system("./configure %s" % " ".join(confOpts))
         os.system("make")
         os.system("make install")
 
@@ -263,7 +270,9 @@ def buildLua(externPath, libPath):
         
         # First, find and replace the line in the Makefile that includes the CFLAGS.  We want
         # to add -fPIC near the end
-        os.system("sed -i 's/CFLAGS= -O2 -Wall/CFLAGS= -O2 -Wall -fPIC/g' %s" % "src/Makefile")
+        replaceInFile("src/Makefile", 
+                      "CFLAGS= -O2 -Wall", 
+                      "CFLAGS= -O2 -Wall -fPIC")
         
         os.system("make posix")
         
@@ -279,10 +288,10 @@ def buildLua(externPath, libPath):
 #  volume code.
 #  @param externPath: The location to uncompress the tar
 #  @param libPath: Where to place the lib once we are done
-def buildHdf5(externPath, libPath):
+def buildHdf5(externPath, libPath, confOpts=[]):
     libName = "Hdf5"             # Library name is used in error messages
     libNameLong = "hdf5-1.8.8"   # Long library name is used as the tar name
-    libFile = "libhdf5.a"
+    libFile = "libhdf5.so"
     
     if path.exists(join(libPath, libFile)):
         print "Skipping %s -- Already Built" % libName
@@ -291,7 +300,7 @@ def buildHdf5(externPath, libPath):
     with TarContextManager(join(externPath, libNameLong + ".tar.gz"), externPath, libNameLong):
         
         # Compile
-        os.system("./configure --prefix=%s" % externPath)
+        os.system("./configure %s" % " ".join(confOpts))
         os.system("make")
         os.system("make install")
         
@@ -306,7 +315,7 @@ def buildHdf5(externPath, libPath):
 def buildField3D(externPath, libPath, archNum="32"):
     libName = "Field3D"             # Library name is used in error messages
     libNameLong = "Field3D"   # Long library name is used as the tar name
-    libFile = "libField3D.a"
+    libFile = "libField3D.so"
     
     incPath = join(externPath, "include")
     
@@ -330,7 +339,11 @@ def buildField3D(externPath, libPath, archNum="32"):
         
         replaceInFile("Site.py", "libPaths = [", "libPaths = [\"%s\"," % libPath)
         
+        # Remove TERRIBLE additional namespace that caused SO MUCH GRIEF
         replaceInFile("Site.py", "extraNamespace = \"SPI\"", "")
+        
+        # Add -fPIC... cuz i said so.
+        replaceInFile("BuildSupport.py", "env.Append(CCFLAGS = [\"-Wall\"])", "env.Append(CCFLAGS = [\"-Wall\", \"-fPIC\"])")
         
         # Include correct boost thread library
         replaceInFile("Site.py", "boost_thread-gcc34-mt", "boost_thread-mt")
@@ -339,7 +352,7 @@ def buildField3D(externPath, libPath, archNum="32"):
         os.system("scons do64=1")
         
         # Copy lib
-        shutil.copy("install/linux2/m%s/release/lib/libField3D.a" % archNum, libPath)
+        shutil.copy("install/linux2/m%s/release/lib/libField3D.so" % archNum, libPath)
         
         # Copy Include
         copyHeaders("install/linux2/m%s/release/include/Field3D" % archNum, join(incPath, "Field3D"))
@@ -348,7 +361,7 @@ def buildField3D(externPath, libPath, archNum="32"):
 ## buildAllLibs will go through and build each required lib one at a time.
 #  After all of the build* methods have been run, the extern/lib folder
 #  should be filled with ready-to-use static libraries.      
-def buildAllLibs(archNum):
+def buildAllLibs(archNum, buildLibPath=join("build","lib")):
         
     # Necessary paths
     externPath = path.abspath("extern")
@@ -359,12 +372,34 @@ def buildAllLibs(archNum):
         raise ValueError("No extern path [%s]" % externPath)
     if not path.exists(libPath):
         os.makedirs(libPath)
+        
+    # Ensure that the libraries running ./configure will build ONLY as static
+    # libraries.  This is very important, as shared libraries just lead to
+    # complications and hearache.
+    #
+    configureOpts = ["--prefix=%s" % externPath,
+                     #"--enable-shared=yes",
+                     #"--enable-static=no",
+                     "CPPFLAGS=\"-fPIC\""
+                     ]
     
     # We skip over Lua because we have LuaJIT working!
     #buildLua(externPath, libPath)
     buildLuaJIT(externPath, libPath)
     buildLuaBind(externPath, libPath)
-    buildIlmBase(externPath, libPath)
-    buildOpenEXR(externPath, libPath)
-    buildHdf5(externPath, libPath)
+    buildIlmBase(externPath, libPath, 
+                 confOpts=configureOpts + ["--enable-shared=no",
+                                           "--enable-static=yes"])
+    buildOpenEXR(externPath, libPath, 
+                 confOpts=configureOpts + ["--enable-shared=yes",
+                                           "--enable-static=yes"])
+    buildHdf5(externPath, libPath, 
+                 confOpts=configureOpts + ["--enable-shared=yes",
+                                           "--enable-static=yes"])
     buildField3D(externPath, libPath, archNum=archNum)
+    
+    # Copy libs out of extern
+    if not path.exists(buildLibPath):
+        os.symlink(libPath, buildLibPath)
+        
+    #shutil.copytree(libPath, buildLibPath)

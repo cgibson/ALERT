@@ -1,13 +1,12 @@
 from BuildConfig import *
 
-
 Import('env')
 
 testEnv = env.Clone()
 
 pathToRoot = ".."
 
-setupEnv(testEnv, pathToRoot)
+updateEnv(testEnv, pathToRoot)
 
 Export('testEnv')
 
@@ -25,8 +24,8 @@ for dir in testModules:
     		
     		fileName = fileName.split(".")[0]
     
-    		outDir = join(getBuildPath(pathToRoot), testDir, dir, fileName)
+    		outDir = join(getBuildPath(pathToRoot), dir, fileName)
     		objects = objects + testEnv.Object(source=file, target=outDir)
 	
     	# Example: ../build/test/glm/glm
-        testEnv.Program(join(getBuildPath(pathToRoot), testDir, dir, dir), objects)
+        testEnv.Program(join(getBuildPath(pathToRoot), testPath, dir, dir), objects)

@@ -3,26 +3,27 @@ from BuildConfig import *
 
 Import('testEnv')
 
-luaTestEnv = testEnv.Clone()
+#testEnv = testEnv.Clone()
 
 pathToRoot = "../.."
 
-setupEnv(luaTestEnv, pathToRoot)
+updateEnv(testEnv, pathToRoot)
 
-outDir = join(getBuildPath(pathToRoot), testDir, "luabind")
+outDir = join(getBuildPath(pathToRoot), "luabind")
 
 sources = ["unittests.cpp"]
-sources = sources + getSource("geom", pathToRoot)
-sources = sources + getSource("util", pathToRoot)
-sources = sources + getSource("core", pathToRoot)
-sources = sources + getSource("light", pathToRoot)
-sources = sources + getSource("lua", pathToRoot)
 
 objects = []
 
 for source in sources:
     source = str(source)
     name = (source.split("/")[-1]).split(".")[0]
-    objects.append(luaTestEnv.Object(join(outDir, name), source))
+    objects.append(testEnv.Object(join(outDir, name), source))
 
-luaTestEnv.Program(join(outDir,"suites"), objects)
+objects = objects + buildSource("geom",testEnv, pathToRoot)
+objects = objects + buildSource("util",testEnv, pathToRoot)
+objects = objects + buildSource("core",testEnv, pathToRoot)
+objects = objects + buildSource("light",testEnv, pathToRoot)
+objects = objects + buildSource("lua",testEnv, pathToRoot)
+
+testEnv.Program(join(getBuildPath(pathToRoot),testPath ,"Luabind-unittest"), objects)

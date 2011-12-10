@@ -8,13 +8,11 @@ from LibConfig import *
 
 #------------------------------------------------------------------------------#
 
-archNum = "64"
+arch32="32"
+arch64="64"
 
 # Program to output
 programName = 'AleRT'
-
-# The location to compile the program
-programPath = '.'
 
 # The compiler to use throughout the compilation process
 compilerType = 'g++'
@@ -22,14 +20,17 @@ compilerType = 'g++'
 # Where to place all build-related objects and files
 buildPath = "build"
 
+# The location to compile the program
+programPath = join(buildPath, "bin")
+
 # Where all libraries exist
-buildLibPath = buildPath + "/lib"
+buildLibPath = join(buildPath, "lib")
 
 # No source besides include files and test files should exist outside of here
 srcDir = "src"
 
 # Test directory
-testDir = "test"
+testPath = "test"
 
 externPath = "extern"
 
@@ -50,7 +51,7 @@ srcModules = [
 
 # Modules referenced by the test source code
 testModules = [
-               'glm',
+               #'glm',
                'luabind',
                'texture',
                'Field3D'
@@ -70,7 +71,7 @@ sysIncludePaths = [
 # Paths containing libraries
 sysLibPaths = [
                'lib',
-               'extern/lib'
+               buildLibPath
               ]
 
 # Libraries to reference
@@ -96,6 +97,14 @@ testLibs = [
 
 
 #------------------------------------------------------------------------------#
+
+## pulled from Field3D build script.  Used to determine arch string
+def architectureStr():
+    if ARGUMENTS.get('do64', 0):
+        return arch64
+    else:
+        return arch32
+
 
 ## isDebugBuild returns whether or not the "debug=1" flag was included while
 #  running scons
@@ -126,7 +135,7 @@ def getBuildPath(pathToRoot = "."):
 #  craziness
 #  @param paths: List of paths to sanitize
 #  @param pathToRoot: The path that gets us to the root directory
-def buildPaths(paths, pathToRoot):
+def buildPaths(paths, pathToRoot="."):
     mapPath = lambda x:  x if path.isabs(x) else join(pathToRoot, x); 
     return map(mapPath, paths)
 
@@ -137,7 +146,26 @@ def buildPaths(paths, pathToRoot):
 #  @param pathToRoot: Used to normalize the path to the source dir
 def getSource(module, pathToRoot = "."):
     #print join(pathToRoot, buildPath, module, "*.cpp")
+    
     return Glob(join(pathToRoot, srcDir, module, "*.cpp"))
+
+
+
+## getSource will take the module requested and normalize it based on the 
+#  pathToRoot variable, returning all source files within
+#  @param module: The directory under the source dir to grab cpp files from
+#  @param pathToRoot: Used to normalize the path to the source dir
+def buildSource(module, env, pathToRoot = "."):
+    #print join(pathToRoot, buildPath, module, "*.cpp")
+    objects = []
+    for file in Glob(join(pathToRoot, srcDir, module, '*.cpp')):
+        fileName = os.path.basename(str(file))
+        
+        fileName = fileName.split(".")[0]
+
+        outDir = join(getBuildPath(pathToRoot), module, fileName)
+        objects = objects + env.Object(outDir, file)
+    return objects
 
 
 #------------------------------------------------------------------------------#
@@ -168,7 +196,27 @@ def setupEnv(env, pathToRoot = "."):
     if isDebugBuild():
         env.Append(CCFLAGS = ["-g"])
         
+    env.Append(LDFLAGS="-rpath=%s" % path.abspath(join(externPath, "lib")))
+
         
+
+def updateEnv(env, pathToRoot = "."):
+            
+    applyDir = lambda x, y: "%s/%s" % (x, y);
+    
+    # Include paths
+    env.Replace(CPPPATH = buildPaths(sysIncludePaths, pathToRoot))
+    
+    # Library paths
+    env.Replace(LIBPATH = buildPaths(sysLibPaths, pathToRoot))
+    
+    if isDebugBuild():
+        env.Append(CCFLAGS = ["-g"])
+    
+    # Libraries
+    env.Replace(LIBS = sysLibs)
+    
+    
 #------------------------------------------------------------------------------#
 ## Hopefully unused
 def initialize(pathToRoot = "."):
@@ -184,7 +232,7 @@ def initialize(pathToRoot = "."):
 
 ## rebuildLibs runs the "buildAllLibs" method within the libConfig module
 def rebuildLibs():
-    buildAllLibs(archNum)
+    buildAllLibs(architectureStr())
     
 ## moveLibs moves all libs to the build library path for use in the build
 #  folder structure
