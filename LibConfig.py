@@ -349,7 +349,7 @@ def buildField3D(externPath, libPath, archNum="32"):
         replaceInFile("Site.py", "boost_thread-gcc34-mt", "boost_thread-mt")
         
         # Compile
-        os.system("scons do64=1")
+        os.system("scons " + ("" if archNum == "32" else "do64=1") )
         
         # Copy lib
         shutil.copy("install/linux2/m%s/release/lib/libField3D.so" % archNum, libPath)
